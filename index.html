@@ -1,132 +1,132 @@
-!DOCTYPE html
-html lang=ru
-head
-meta charset=utf-8
-meta name=viewport content=width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no
-meta name=theme-color content=#0a0514
-titleНарисуй мне 💖title
-style
-   { box-sizing border-box; -webkit-tap-highlight-color transparent; }
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0514">
+<title>Нарисуй мне 💖</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-    height 100%; margin 0; overflow hidden;
-    background radial-gradient(120% 90% at 50% 10%, #2c1442 0%, #11061e 50%, #030105 100%);
-    color #fff;
-    font-family -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    user-select none; -webkit-user-select none;
+    height: 100%; margin: 0; overflow: hidden;
+    background: radial-gradient(120% 90% at 50% 10%, #2c1442 0%, #11061e 50%, #030105 100%);
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    user-select: none; -webkit-user-select: none;
   }
 
   #board {
-    position fixed; inset 0; z-index 1;
-    touch-action none;
-    cursor crosshair;
+    position: fixed; inset: 0; z-index: 1;
+    touch-action: none;
+    cursor: crosshair;
   }
 
   .top-ui {
-    position fixed; top 0; left 0; right 0; z-index 3;
-    padding 20px;
-    display flex; flex-direction column; align-items center;
-    pointer-events none;
-    background linear-gradient(to bottom, rgba(10,5,20,0.9) 0%, rgba(10,5,20,0) 100%);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 3;
+    padding: 20px;
+    display: flex; flex-direction: column; align-items: center;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(10,5,20,0.9) 0%, rgba(10,5,20,0) 100%);
   }
 
   .title {
-    font-size clamp(20px, 5vw, 26px); font-weight 800;
-    margin 0 0 15px 0; text-align center;
-    background linear-gradient(120deg, #fff, #ffb3c6, #fff);
-    -webkit-background-clip text; background-clip text; color transparent;
-    filter drop-shadow(0 0 15px rgba(255, 100, 150, 0.5));
-    transition opacity 0.3s;
+    font-size: clamp(20px, 5vw, 26px); font-weight: 800;
+    margin: 0 0 15px 0; text-align: center;
+    background: linear-gradient(120deg, #fff, #ffb3c6, #fff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 15px rgba(255, 100, 150, 0.5));
+    transition: opacity 0.3s;
   }
 
   .toolbar {
-    display flex; gap 10px; align-items center; flex-wrap wrap; justify-content center;
-    background rgba(255, 255, 255, 0.1);
-    backdrop-filter blur(12px); -webkit-backdrop-filter blur(12px);
-    padding 10px 20px; border-radius 999px;
-    border 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow 0 8px 32px rgba(0,0,0,0.3);
-    pointer-events auto;
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    padding: 10px 20px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    pointer-events: auto;
   }
 
   .color-btn {
-    width 28px; height 28px; border-radius 50%;
-    border 2px solid transparent; cursor pointer;
-    transition transform 0.2s, box-shadow 0.2s;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid transparent; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .color-btnhover { transform scale(1.15); }
+  .color-btn:hover { transform: scale(1.15); }
   .color-btn.active {
-    border-color #fff; transform scale(1.2);
-    box-shadow 0 0 15px rgba(255,255,255,0.6);
+    border-color: #fff; transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
   }
 
   .action-btn {
-    background rgba(255, 255, 255, 0.15);
-    border none; color #fff; cursor pointer;
-    padding 8px 16px; border-radius 999px;
-    font-size 14px; font-weight 700;
-    transition background 0.2s, transform 0.1s;
+    background: rgba(255, 255, 255, 0.15);
+    border: none; color: #fff; cursor: pointer;
+    padding: 8px 16px; border-radius: 999px;
+    font-size: 14px; font-weight: 700;
+    transition: background 0.2s, transform 0.1s;
   }
-  .action-btnactive { transform scale(0.95); }
-  .action-btn.freeze { background rgba(100, 200, 255, 0.2); border 1px solid rgba(100, 200, 255, 0.4); }
-  .action-btn.clear { background rgba(255, 100, 100, 0.15); }
+  .action-btn:active { transform: scale(0.95); }
+  .action-btn.freeze { background: rgba(100, 200, 255, 0.2); border: 1px solid rgba(100, 200, 255, 0.4); }
+  .action-btn.clear { background: rgba(255, 100, 100, 0.15); }
   .action-btn.share { 
-    background linear-gradient(135deg, #ff4d7d, #ff8fa3); 
-    box-shadow 0 4px 15px rgba(255, 77, 125, 0.4);
-    font-size 16px; padding 10px 20px;
+    background: linear-gradient(135deg, #ff4d7d, #ff8fa3); 
+    box-shadow: 0 4px 15px rgba(255, 77, 125, 0.4);
+    font-size: 16px; padding: 10px 20px;
   }
 
   .hint {
-    position fixed; bottom 30px; left 0; right 0; z-index 2;
-    text-align center; font-size 14px; opacity 0.6;
-    pointer-events none;
-    animation pulse 2s infinite;
+    position: fixed; bottom: 30px; left: 0; right: 0; z-index: 2;
+    text-align: center; font-size: 14px; opacity: 0.6;
+    pointer-events: none;
+    animation: pulse 2s infinite;
   }
-  @keyframes pulse { 0%, 100% { opacity 0.6; } 50% { opacity 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
   .toast {
-    position fixed; left 50%; top 50%; transform translate(-50%, -50%) scale(0.9);
-    background rgba(255,255,255,0.15); backdrop-filter blur(15px);
-    padding 15px 30px; border-radius 20px; border 1px solid rgba(255,255,255,0.3);
-    font-weight 700; font-size 18px; z-index 10; text-align center;
-    opacity 0; pointer-events none; transition all 0.3s ease;
+    position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(15px);
+    padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3);
+    font-weight: 700; font-size: 18px; z-index: 10; text-align: center;
+    opacity: 0; pointer-events: none; transition: all 0.3s ease;
   }
-  .toast.show { opacity 1; transform translate(-50%, -50%) scale(1); }
+  .toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
   .flash {
-    position fixed; inset 0; background #fff; z-index 9;
-    opacity 0; pointer-events none; transition opacity 0.3s;
+    position: fixed; inset: 0; background: #fff; z-index: 9;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
   }
-  .flash.active { opacity 0.8; transition none; }
-style
-head
-body
+  .flash.active { opacity: 0.8; transition: none; }
+</style>
+</head>
+<body>
 
-canvas id=boardcanvas
+<canvas id="board"></canvas>
 
-div class=top-ui
-  h1 class=title id=mainTitleНарисуй мне что-нибудь 💖h1
-  div class=toolbar
-    div class=color-btn active style=background #ff4d7d; data-color=#ff4d7ddiv
-    div class=color-btn style=background #ff8fc7; data-color=#ff8fc7div
-    div class=color-btn style=background #a875ff; data-color=#a875ffdiv
-    div class=color-btn style=background #4da6ff; data-color=#4da6ffdiv
-    div class=color-btn style=background #ffd700; data-color=#ffd700div
-    div class=color-btn style=background #ffffff; data-color=#ffffffdiv
+<div class="top-ui">
+  <h1 class="title" id="mainTitle">Нарисуй мне что-нибудь 💖</h1>
+  <div class="toolbar">
+    <div class="color-btn active" style="background: #ff4d7d;" data-color="#ff4d7d"></div>
+    <div class="color-btn" style="background: #ff8fc7;" data-color="#ff8fc7"></div>
+    <div class="color-btn" style="background: #a875ff;" data-color="#a875ff"></div>
+    <div class="color-btn" style="background: #4da6ff;" data-color="#4da6ff"></div>
+    <div class="color-btn" style="background: #ffd700;" data-color="#ffd700"></div>
+    <div class="color-btn" style="background: #ffffff;" data-color="#ffffff"></div>
     
-    div style=width 1px; height 20px; background rgba(255,255,255,0.2); margin 0 5px;div
+    <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.2); margin: 0 5px;"></div>
 
-    button class=action-btn freeze id=freezeBtnЗаморозить 🧊button
-    button class=action-btn clear id=clearBtnСтеретьbutton
-    button class=action-btn share id=shareBtnОтправить 💌button
-  div
-div
+    <button class="action-btn freeze" id="freezeBtn">Заморозить 🧊</button>
+    <button class="action-btn clear" id="clearBtn">Стереть</button>
+    <button class="action-btn share" id="shareBtn">Отправить 💌</button>
+  </div>
+</div>
 
-div class=hint id=hintВоди пальчиком по экрану ✨div
+<div class="hint" id="hint">Води пальчиком по экрану ✨</div>
 
-div class=toast id=toastdiv
-div class=flash id=flashdiv
+<div class="toast" id="toast"></div>
+<div class="flash" id="flash"></div>
 
-script
+<script>
   const canvas = document.getElementById('board');
   const ctx = canvas.getContext('2d');
   
@@ -140,11 +140,11 @@ script
   const SPAWN_RATE = 3;
 
   function resize() {
-    DPR = Math.min(window.devicePixelRatio  1, 2);
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
     W = window.innerWidth;
     H = window.innerHeight;
-    canvas.width = W  DPR;
-    canvas.height = H  DPR;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
     canvas.style.width = W + 'px';
     canvas.style.height = H + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -154,30 +154,29 @@ script
 
   function createParticle(x, y, color) {
     const types = ['heart', 'heart', 'star', 'circle'];
-    const type = types[Math.floor(Math.random()  types.length)];
+    const type = types[Math.floor(Math.random() * types.length)];
     
-     Если заморожено, новые частицы сразу замирают (decay=0)
-    const frozenState = isFrozen  { vx 0, vy 0, decay 0, gravity 0, rotV 0 }  { 
-      vx (Math.random() - 0.5)  3, 
-      vy (Math.random() - 0.5)  3 - 1, 
-      decay Math.random()  0.015 + 0.005,
-      gravity 0.05,
-      rotV (Math.random() - 0.5)  0.1
+    const frozenState = isFrozen ? { vx: 0, vy: 0, decay: 0, gravity: 0, rotV: 0 } : { 
+      vx: (Math.random() - 0.5) * 3, 
+      vy: (Math.random() - 0.5) * 3 - 1, 
+      decay: Math.random() * 0.015 + 0.005,
+      gravity: 0.05,
+      rotV: (Math.random() - 0.5) * 0.1
     };
 
     return {
       x, y,
-      size Math.random()  15 + 10,
-      color color,
-      type type,
-      life 1,
-      rot Math.random()  Math.PI  2,
+      size: Math.random() * 15 + 10,
+      color: color,
+      type: type,
+      life: 1,
+      rot: Math.random() * Math.PI * 2,
       ...frozenState
     };
   }
 
   function drawHeart(ctx, x, y, size, color) {
-    ctx.save(); ctx.translate(x, y); ctx.scale(size  20, size  20);
+    ctx.save(); ctx.translate(x, y); ctx.scale(size / 20, size / 20);
     ctx.beginPath(); ctx.moveTo(0, 5);
     ctx.bezierCurveTo(0, 0, -10, -5, -10, -10);
     ctx.bezierCurveTo(-10, -20, 0, -20, 0, -10);
@@ -189,9 +188,9 @@ script
   function drawStar(ctx, x, y, size, color) {
     ctx.save(); ctx.translate(x, y);
     ctx.beginPath();
-    for (let i = 0; i  5; i++) {
-      ctx.lineTo(Math.cos((18 + i  72)  Math.PI  180)  size, -Math.sin((18 + i  72)  Math.PI  180)  size);
-      ctx.lineTo(Math.cos((54 + i  72)  Math.PI  180)  size  0.5, -Math.sin((54 + i  72)  Math.PI  180)  size  0.5);
+    for (let i = 0; i < 5; i++) {
+      ctx.lineTo(Math.cos((18 + i * 72) * Math.PI / 180) * size, -Math.sin((18 + i * 72) * Math.PI / 180) * size);
+      ctx.lineTo(Math.cos((54 + i * 72) * Math.PI / 180) * size * 0.5, -Math.sin((54 + i * 72) * Math.PI / 180) * size * 0.5);
     }
     ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.restore();
   }
@@ -199,29 +198,28 @@ script
   function animate() {
     ctx.clearRect(0, 0, W, H);
     
-    if (particles.length  MAX_PARTICLES) particles.splice(0, particles.length - MAX_PARTICLES);
+    if (particles.length > MAX_PARTICLES) particles.splice(0, particles.length - MAX_PARTICLES);
 
-    for (let i = particles.length - 1; i = 0; i--) {
+    for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
       
-       Физика работает только если НЕ заморожено
       if (!isFrozen) {
         p.x += p.vx; p.y += p.vy; p.vy += p.gravity;
-        p.vx = 0.98; p.vy = 0.98; p.rot += p.rotV; 
-        p.life -= p.decay;  Исчезновение
+        p.vx *= 0.98; p.vy *= 0.98; p.rot += p.rotV; 
+        p.life -= p.decay;
 
-        if (p.life = 0) { particles.splice(i, 1); continue; }
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
       }
 
-      ctx.globalAlpha = isFrozen  1  p.life;
+      ctx.globalAlpha = isFrozen ? 1 : p.life;
       
       if (p.type === 'heart') {
         ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
         drawHeart(ctx, 0, 0, p.size, p.color); ctx.restore();
       } else if (p.type === 'star') {
-        drawStar(ctx, p.x, p.y, p.size  0.6, p.color);
+        drawStar(ctx, p.x, p.y, p.size * 0.6, p.color);
       } else {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size  0.3, 0, Math.PI  2);
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.3, 0, Math.PI * 2);
         ctx.fillStyle = p.color; ctx.fill();
       }
     }
@@ -231,8 +229,8 @@ script
   requestAnimationFrame(animate);
 
   function getPos(e) {
-    if (e.touches && e.touches.length  0) return { x e.touches[0].clientX, y e.touches[0].clientY };
-    return { x e.clientX, y e.clientY };
+    if (e.touches && e.touches.length > 0) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
   }
 
   function startDraw(e) {
@@ -250,7 +248,7 @@ script
 
   function spawnParticles(e) {
     const pos = getPos(e);
-    for (let i = 0; i  SPAWN_RATE; i++) {
+    for (let i = 0; i < SPAWN_RATE; i++) {
       particles.push(createParticle(pos.x, pos.y, currentColor));
     }
   }
@@ -258,20 +256,20 @@ script
   canvas.addEventListener('mousedown', startDraw);
   canvas.addEventListener('mousemove', draw);
   window.addEventListener('mouseup', stopDraw);
-  canvas.addEventListener('touchstart', startDraw, { passive false });
-  canvas.addEventListener('touchmove', draw, { passive false });
+  canvas.addEventListener('touchstart', startDraw, { passive: false });
+  canvas.addEventListener('touchmove', draw, { passive: false });
   window.addEventListener('touchend', stopDraw);
 
   const colorBtns = document.querySelectorAll('.color-btn');
-  colorBtns.forEach(btn = {
-    btn.addEventListener('click', (e) = {
-      colorBtns.forEach(b = b.classList.remove('active'));
+  colorBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      colorBtns.forEach(b => b.classList.remove('active'));
       e.target.classList.add('active');
       currentColor = e.target.getAttribute('data-color');
     });
   });
 
-  document.getElementById('clearBtn').addEventListener('click', () = {
+  document.getElementById('clearBtn').addEventListener('click', () => {
     particles = [];
     if (isFrozen) toggleFreeze();
   });
@@ -284,30 +282,28 @@ script
     isFrozen = !isFrozen;
     
     if (isFrozen) {
-      btnFreeze.innerText = Разморозить ☀️;
-      btnFreeze.style.background = rgba(255, 200, 100, 0.2);
-      btnFreeze.style.borderColor = rgba(255, 200, 100, 0.4);
-      mainTitle.innerText = Рисуй спокойно, всё застыло 🧊;
+      btnFreeze.innerText = "Разморозить ☀️";
+      btnFreeze.style.background = "rgba(255, 200, 100, 0.2)";
+      btnFreeze.style.borderColor = "rgba(255, 200, 100, 0.4)";
+      mainTitle.innerText = "Рисуй спокойно, всё застыло 🧊";
       hint.style.opacity = '0';
 
-       Останавливаем все частицы
-      particles.forEach(p = { 
+      particles.forEach(p => { 
         p.vx = 0; p.vy = 0; p.rotV = 0; p.decay = 0; 
       });
 
     } else {
-      btnFreeze.innerText = Заморозить 🧊;
-      btnFreeze.style.background = rgba(100, 200, 255, 0.2);
-      btnFreeze.style.borderColor = rgba(100, 200, 255, 0.4);
-      mainTitle.innerText = Нарисуй мне что-нибудь 💖;
+      btnFreeze.innerText = "Заморозить 🧊";
+      btnFreeze.style.background = "rgba(100, 200, 255, 0.2)";
+      btnFreeze.style.borderColor = "rgba(100, 200, 255, 0.4)";
+      mainTitle.innerText = "Нарисуй мне что-нибудь 💖";
       hint.style.opacity = '0.6';
 
-       Размораживаем возвращаем физику и ИСЧЕЗНОВЕНИЕ
-      particles.forEach(p = {
-        p.vx = (Math.random() - 0.5)  2;  Легкий разлет
-        p.vy = (Math.random() - 0.5)  2 - 1;
-        p.rotV = (Math.random() - 0.5)  0.05;
-        p.decay = Math.random()  0.015 + 0.01;  Они начнут таять, как при обычном рисовании
+      particles.forEach(p => {
+        p.vx = (Math.random() - 0.5) * 2; 
+        p.vy = (Math.random() - 0.5) * 2 - 1;
+        p.rotV = (Math.random() - 0.5) * 0.05;
+        p.decay = Math.random() * 0.015 + 0.01; 
       });
     }
   }
@@ -318,22 +314,22 @@ script
     const t = document.getElementById('toast');
     t.innerText = text;
     t.classList.add('show');
-    setTimeout(() = t.classList.remove('show'), 2500);
+    setTimeout(() => t.classList.remove('show'), 2500);
   }
 
   function captureCanvas() {
-    return new Promise(resolve = {
+    return new Promise(resolve => {
       const flash = document.getElementById('flash');
       flash.classList.add('active');
       
-      setTimeout(() = {
+      setTimeout(() => {
         const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = W  DPR;
-        tempCanvas.height = H  DPR;
+        tempCanvas.width = W * DPR;
+        tempCanvas.height = H * DPR;
         const tCtx = tempCanvas.getContext('2d');
         tCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
-        const grad = tCtx.createRadialGradient(W2, H0.1, 0, W2, H0.1, Math.max(W, H)0.8);
+        const grad = tCtx.createRadialGradient(W/2, H*0.1, 0, W/2, H*0.1, Math.max(W, H)*0.8);
         grad.addColorStop(0, '#2c1442');
         grad.addColorStop(0.5, '#11061e');
         grad.addColorStop(1, '#030105');
@@ -345,32 +341,32 @@ script
         tCtx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         tCtx.font = 'bold 24px -apple-system, sans-serif';
         tCtx.textAlign = 'center';
-        tCtx.fillText('Для тебя 💖', W2, H - 40);
+        tCtx.fillText('Для тебя 💖', W/2, H - 40);
 
         flash.classList.remove('active');
 
-        tempCanvas.toBlob(blob = resolve(blob), 'imagejpeg', 0.9);
+        tempCanvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.9);
       }, 100);
     });
   }
 
-  document.getElementById('shareBtn').addEventListener('click', async () = {
+  document.getElementById('shareBtn').addEventListener('click', async () => {
     try {
       if (particles.length === 0) {
-        showToast(Сначала нарисуй что-нибудь 😉);
+        showToast("Сначала нарисуй что-нибудь 😉");
         return;
       }
 
       const blob = await captureCanvas();
-      const file = new File([blob], 'love-drawing.jpg', { type 'imagejpeg' });
+      const file = new File([blob], 'love-drawing.jpg', { type: 'image/jpeg' });
       
-      if (navigator.canShare && navigator.canShare({ files [file] })) {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
-          files [file],
-          title 'Мой рисунок',
-          text 'Смотри, что я нарисовала для тебя 💖'
+          files: [file],
+          title: 'Мой рисунок',
+          text: 'Смотри, что я нарисовала для тебя 💖'
         });
-        showToast(Отправлено! 💌);
+        showToast("Отправлено! 💌");
       } else {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -379,16 +375,16 @@ script
         document.body.appendChild(a);
         a.click();
         a.remove();
-        setTimeout(() = URL.revokeObjectURL(url), 4000);
-        showToast(Сохранено в галерею 💾);
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        showToast("Сохранено в галерею 💾");
       }
     } catch (err) {
-      console.warn('Share error', err);
+      console.warn('Share error:', err);
       if (err.name !== 'AbortError') {
-        showToast(Ошибка при отправке 😢);
+        showToast("Ошибка при отправке 😢");
       }
     }
   });
-script
-body
-html
+</script>
+</body>
+</html>
